@@ -1,2 +1,2 @@
 # Forest Run
-  final project for coding for animation class
+  Final project for coding for animation class
