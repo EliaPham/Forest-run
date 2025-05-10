@@ -44,6 +44,30 @@ class Girl:
         self.girl_rect.x = self.X_Pos
         self.girl_rect.y = self.Y_Pos
 
+    def update(self, userInput):
+        if self.girl_duck:
+            self.duck()
+        if self.girl_run:
+            self.run()
+        if self.girl_jump:
+            self.jump()
+
+        if self.step_index >= 10:
+            self.step_index = 0
+        
+        if userInput[pygame.K_UP] and not self.girl_jump:
+            self.girl_jump_duck = False
+            self.girl_run = False
+            self.girl_jump = True
+        elif userInput[pygame.K_DOWN] and not self.girl_jump:
+            self.girl_jump_duck = True
+            self.girl_run = False
+            self.girl_jump = False
+        elif not (self.girl_jump or userInput[pygame.K_DOWN]):
+            self.girl_jump_duck = False
+            self.girl_run = True
+            self.girl_jump = False
+
 def main():
     run = True
     clock = pygame.time.Clock()
