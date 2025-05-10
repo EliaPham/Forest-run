@@ -24,3 +24,26 @@ Vine = pygame.image.load(os.path.join("Vine.png"))
 
 Background = pygame.image.load(os.path.join("Setting_background.png"))
 Foreground = pygame.image.load(os.path.join("Setting_foreground.png"))
+
+def main():
+    run = True
+    clock = pygame.time.Clock()
+    player = Girl()
+
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+        Screen.fill((255, 255, 255))
+        userInput = pygame.key.get_pressed()
+
+        player.draw(Screen)
+        player.update(userInput)
+
+        clock.tick(30)
+        pygame.display.update()
+
+
+if __name__ == "__main__":
+    main()
