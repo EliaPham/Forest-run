@@ -1,5 +1,6 @@
 import pygame
 import os
+import random
 
 pygame.init()
 
@@ -28,7 +29,7 @@ Foreground = pygame.image.load(os.path.join("CS_project", "Setting_foreground.pn
 class Girl:
     X_Pos = 80
     Y_Pos = 310
-    Y_Pos_Duck = 340
+    Y_Pos_Duck = 328
     Jump_Velocity = 8.5
 
     def __init__(self):
@@ -99,9 +100,11 @@ class Girl:
         Screen.blit(self.image, (self.girl_rect.x, self.girl_rect.y))
 
 def main():
+    global game_speed
     run = True
     clock = pygame.time.Clock()
     player = Girl()
+    game_speed = 14
 
     while run:
         for event in pygame.event.get():
