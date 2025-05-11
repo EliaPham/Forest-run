@@ -99,13 +99,37 @@ class Girl:
     def draw(self, Screen):
         Screen.blit(self.image, (self.girl_rect.x, self.girl_rect.y))
 
+
 def main():
-    global game_speed
+    global game_speed, x_pos_set, y_pos_set
     run = True
     clock = pygame.time.Clock()
     player = Girl()
     game_speed = 14
+    x_pos_set = 0
+    y_pos_set = 240
 
+    def background():
+        global x_pos_set, y_pos_set
+        image_width = Background.get_width()
+        Screen.blit(Background, (x_pos_set, y_pos_set))
+        Screen.blit(Background, (image_width + x_pos_set, y_pos_set))
+        if x_pos_set <= -image_width:
+            Screen.blit(Background, (image_width + x_pos_set, y_pos_set))
+            x_pos_set = 0
+        x_pos_set -= game_speed - 10
+
+    def foreground():
+        global x_pos_set, y_pos_set
+        image_width = Foreground.get_width()
+        Screen.blit(Foreground, (x_pos_set, y_pos_set))
+        Screen.blit(Foreground, (image_width + x_pos_set, y_pos_set))
+        if x_pos_set <= -image_width:
+            Screen.blit(Foreground, (image_width + x_pos_set, y_pos_set))
+            x_pos_set = 0
+        x_pos_set -= game_speed
+
+    
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -114,6 +138,9 @@ def main():
         Screen.fill((255, 255, 255))
         userInput = pygame.key.get_pressed()
 
+        background()
+        foreground()
+        
         player.draw(Screen)
         player.update(userInput)
 
