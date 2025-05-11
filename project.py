@@ -75,6 +75,9 @@ class Girl:
         self.girl_rect.y = self.Y_Pos
         self.step_index += 1
 
+    def draw(self, Screen):
+        Screen.blit(self.image, (self.girl_rect.x, self.girl_rect.y))
+
 def main():
     run = True
     clock = pygame.time.Clock()
