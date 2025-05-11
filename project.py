@@ -11,8 +11,8 @@ Screen = pygame.display.set_mode((Screen_Width, Screen_Height))
 Running = [pygame.image.load(os.path.join("CS_project", "Girl_run1.png")), 
            pygame.image.load(os.path.join("CS_project", "Girl_run2.png"))]
 Jumping = pygame.image.load(os.path.join("CS_project", "Girl_stand_jump.png"))
-Ducking = [pygame.image.load(os.path.join("CS_project", "Girl_duck1.png")), 
-           pygame.image.load(os.path.join("CS_project", "Girl_duck2.png"))]
+Ducking = [pygame.image.load(os.path.join("CS_project", "Girl_duck2.png")), 
+           pygame.image.load(os.path.join("CS_project", "Girl_duck1.png"))]
 
 Small_Log = pygame.image.load(os.path.join("CS_project", "LogSmall.png"))
 Large_Cactus = pygame.image.load(os.path.join("CS_project", "LogLarge.png"))
@@ -28,17 +28,20 @@ Foreground = pygame.image.load(os.path.join("CS_project", "Setting_foreground.pn
 class Girl:
     X_Pos = 80
     Y_Pos = 310
+    Y_Pos_Duck = 340
+    Jump_Velocity = 8.5
 
     def __init__(self):
         self.duck_img = Ducking
         self.run_img = Running
-        self.Jump_img = Jumping
+        self.jump_img = Jumping
 
         self.girl_duck = False
         self.girl_run = True
         self.girl_jump = False
 
         self.step_index = 0
+        self.jump_vel = self.Jump_Velocity
         self.image = self.run_img[0]
         self.girl_rect = self.image.get_rect()
         self.girl_rect.x = self.X_Pos
@@ -56,17 +59,24 @@ class Girl:
             self.step_index = 0
         
         if userInput[pygame.K_UP] and not self.girl_jump:
-            self.girl_jump_duck = False
+            self.girl_duck = False
             self.girl_run = False
             self.girl_jump = True
         elif userInput[pygame.K_DOWN] and not self.girl_jump:
-            self.girl_jump_duck = True
+            self.girl_duck = True
             self.girl_run = False
             self.girl_jump = False
         elif not (self.girl_jump or userInput[pygame.K_DOWN]):
-            self.girl_jump_duck = False
+            self.girl_duck = False
             self.girl_run = True
             self.girl_jump = False
+
+    def duck(self):
+        self.image = self.duck_img[self.step_index // 5]
+        self.girl_rect = self.image.get_rect()
+        self.girl_rect.x = self.X_Pos
+        self.girl_rect.y = self.Y_Pos_Duck
+        self.step_index += 1
 
     def run(self):
         self.image = self.run_img[self.step_index // 5]
@@ -74,6 +84,16 @@ class Girl:
         self.girl_rect.x = self.X_Pos
         self.girl_rect.y = self.Y_Pos
         self.step_index += 1
+
+    def jump(self):
+        self.image = self.jump_img
+        if self.girl_jump:
+            self.girl_rect.y -= self.jump_vel * 4
+            self.jump_vel -= 0.8
+        if self.jump_vel < - self.Jump_Velocity:
+            self.girl_jump = False
+            self.jump_vel = self.Jump_Velocity
+
 
     def draw(self, Screen):
         Screen.blit(self.image, (self.girl_rect.x, self.girl_rect.y))
