@@ -68,6 +68,13 @@ class Girl:
             self.girl_run = True
             self.girl_jump = False
 
+    def run(self):
+        self.image = self.run_img[self.step_index // 5]
+        self.girl_rect = self.image.get_rect()
+        self.girl_rect.x = self.X_Pos
+        self.girl_rect.y = self.Y_Pos
+        self.step_index += 1
+
 def main():
     run = True
     clock = pygame.time.Clock()
