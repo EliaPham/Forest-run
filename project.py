@@ -101,13 +101,16 @@ class Girl:
 
 
 def main():
-    global game_speed, x_pos_set, y_pos_set
+    global game_speed, x_pos_set, y_pos_set, points
     run = True
     clock = pygame.time.Clock()
     player = Girl()
     game_speed = 14
     x_pos_set = 0
     y_pos_set = 240
+    points = 0
+    font = pygame.font.Font('freesansbold.ttf', 20)
+    
 
     def background():
         global x_pos_set, y_pos_set
@@ -143,6 +146,8 @@ def main():
         
         player.draw(Screen)
         player.update(userInput)
+
+        score()
 
         clock.tick(30)
         pygame.display.update()
