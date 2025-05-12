@@ -9,27 +9,35 @@ Screen_Height = 600
 Screen_Width = 1100
 Screen = pygame.display.set_mode((Screen_Width, Screen_Height))
 
-Running = [pygame.image.load(os.path.join("CS_project", "Girl_run1.png")), 
-           pygame.image.load(os.path.join("CS_project", "Girl_run2.png"))]
-Jumping = pygame.image.load(os.path.join("CS_project", "Girl_stand_jump.png"))
-Ducking = [pygame.image.load(os.path.join("CS_project", "Girl_duck2.png")), 
-           pygame.image.load(os.path.join("CS_project", "Girl_duck1.png"))]
+Running = [pygame.transform.scale(
+        pygame.image.load(os.path.join("CS_project", "Girl_run1.png")), (int(120), int(163))), 
+        pygame.transform.scale(
+        pygame.image.load(os.path.join("CS_project", "Girl_run2.png")), (int(120), int(163)))]
+Jumping = pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "Girl_stand_jump.png")), (int(120), int(160)))
+Ducking =[pygame.transform.scale(
+        pygame.image.load(os.path.join("CS_project", "Girl_duck2.png")), (int(120), int(117.5))),
+        pygame.transform.scale(
+        pygame.image.load(os.path.join("CS_project", "Girl_duck1.png")), (int(120), int(117.5)))]
 
-Small_Log = [pygame.image.load(os.path.join("CS_project", "LogSmall.png"))]
-Large_Log = [pygame.image.load(os.path.join("CS_project", "LogLarge.png"))]
-Snail = [pygame.image.load(os.path.join("CS_project", "Snail.png"))]
+Small_Log = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "LogSmall.png")), (int(82.5), int(82.5)))]
+Large_Log = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "LogLarge.png")), (int(147.5), int(147.5)))]
+Snail = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "Snail.png")), (int(90), int(63)))]
 
-Bird = [pygame.image.load(os.path.join("CS_project", "Bird1.png")), 
-        pygame.image.load(os.path.join("CS_project", "Bird2.png"))]
-Vine = [pygame.image.load(os.path.join("CS_project", "Vine.png"))]
+Bird = [pygame.transform.scale(
+    pygame.image.load(os.path.join("CS_project", "Bird1.png")), (int(96), int(72))),
+    pygame.transform.scale(
+    pygame.image.load(os.path.join("CS_project", "Bird2.png")), (int(96), int(72)))]
+Vine = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "Vine.png")), (int(160), int(350)))]
 
-Background = pygame.image.load(os.path.join("CS_project", "Setting_background.png"))
-Foreground = pygame.image.load(os.path.join("CS_project", "Setting_foreground.png"))
+Background = pygame.transform.scale(
+    pygame.image.load(os.path.join("CS_project", "Setting_background.png")), (int(9616), int(600)))
+Foreground = pygame.transform.scale(
+    pygame.image.load(os.path.join("CS_project", "Setting_foreground.png")), (int(9616), int(600)))
 
 class Girl:
     X_Pos = 80
-    Y_Pos = 310
-    Y_Pos_Duck = 328
+    Y_Pos = 320
+    Y_Pos_Duck = 365
     Jump_Velocity = 8.5
 
     def __init__(self):
@@ -118,13 +126,25 @@ class SmallLog(Obstacle):
     def __init__(self, image):
         self.type = 0
         super().__init__(image, self.type)
-        self.rect.y = 325
+        self.rect.y = 420
 
 class LargeLog(Obstacle):
     def __init__(self, image):
         self.type = 0
         super().__init__(image, self.type)
-        self.rect.y = 300
+        self.rect.y = 370
+
+class Snails(Obstacle):
+    def __init__(self, image):
+        self.type = 0
+        super().__init__(image, self.type)
+        self.rect.y = 430
+
+class Vines(Obstacle):
+    def __init__(self, image):
+        self.type = 0
+        super().__init__(image, self.type)
+        self.rect.y = 0
 
 class Birds(Obstacle):
     def __init__(self, image):
@@ -138,12 +158,6 @@ class Birds(Obstacle):
         Screen.blit(self.image[self.index//5], self.rect)
         self.index += 1
 
-class Snails(Obstacle):
-    def __init__(self, image):
-        self.type = 0
-        super().__init__(image, self.type)
-        self.rect.y = 330
-
 
 def main():
     global game_speed, x_pos_set, y_pos_set, points, obstacles
@@ -152,7 +166,7 @@ def main():
     player = Girl()
     game_speed = 14
     x_pos_set = 0
-    y_pos_set = 240
+    y_pos_set = 0
     points = 0
     font = pygame.font.Font('freesansbold.ttf', 20)
     obstacles = []
@@ -206,22 +220,25 @@ def main():
         player.update(userInput)
 
         if len(obstacles) == 0:
-            if random.randint(0, 3) == 0:
+            if random.randint(0, 4) == 0:
                 obstacles.append(SmallLog(Small_Log))
-            elif random.randint(0, 3) == 1:
+            elif random.randint(0, 4) == 1:
                 obstacles.append(LargeLog(Large_Log))
-            elif random.randint(0, 3) == 2:
+            elif random.randint(0, 4) == 2:
                 obstacles.append(Snails(Snail))
-            elif random.randint(0, 3) == 3:
+            elif random.randint(0, 4) == 3:
+                obstacles.append(Vines(Vine))
+            elif random.randint(0, 4) == 4:
                 obstacles.append(Birds(Bird))
 
-        for obstacle in obstacles:
+        for obstacle in list(obstacles):
             obstacle.draw(Screen)
             obstacle.update()
             if player.girl_rect.colliderect(obstacle.rect):
                 pygame.time.delay(2000)
                 death_count += 1
                 menu(death_count)
+                return
                 
         score()
 
@@ -238,7 +255,7 @@ def menu(death_count):
         if death_count == 0:
             text = font.render("Press any Key to Start", True, (0, 0, 0))
         elif death_count > 0:
-            text = font.render("Press any Key ro Restart", True, (0, 0, 0))
+            text = font.render("Press any Key to Restart", True, (0, 0, 0))
             score = font.render("Your Score: " + str(points), True, (0, 0, 0))
             scoreRect = score.get_rect()
             scoreRect.center = (Screen_Width // 2, Screen_Height // 2 + 50)
@@ -246,7 +263,7 @@ def menu(death_count):
         textRect = text.get_rect()
         textRect.center = (Screen_Width // 2, Screen_Height // 2)
         Screen.blit(text, textRect)
-        Screen.blit(Running[0], (Screen_Width // 2 - 20, Screen_Height // 2 - 140))
+        Screen.blit(Running[0], (Screen_Width // 2 -70, Screen_Height // 2 - 200))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
