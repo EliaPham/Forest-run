@@ -150,6 +150,7 @@ def main():
     points = 0
     font = pygame.font.Font('freesansbold.ttf', 20)
     obstacles = []
+    death_count = 0
 
     def score():
         global points, game_speed
@@ -219,6 +220,32 @@ def main():
         clock.tick(30)
         pygame.display.update()
 
+def menu(death_count):
+    global points
+    run = True
+    while run:
+        Screen.fill((255, 255, 255))
+        font = pygame.font.Font('freesansbold.ttf', 30)
+
+        if death_count == 0:
+            text = font.render("Press any Key to Start", True, (0, 0, 0))
+        elif death_count > 0:
+            text = font.render("Press any Key ro Restart", True, (0, 0, 0))
+            score = font.render("Your Score: " + str(points), True, (0, 0, 0))
+            scoreRect = score.get_rect()
+            scoreRect.center = (Screen_Width // 2, Screen_Height // 2 + 50)
+            Screen.blit(score, scoreRect)
+        textRect = text.get_rect()
+        textRect.center = (Screen_Width // 2, Screen_Height // 2)
+        Screen.blit(text, textRect)
+        Screen.blit(Running[0], (Screen_Width // 2 - 20, Screen_Height // 2 - 140))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                main()
+
 
 if __name__ == "__main__":
-    main()
+    menu(death_count=0)
