@@ -15,13 +15,13 @@ Jumping = pygame.image.load(os.path.join("CS_project", "Girl_stand_jump.png"))
 Ducking = [pygame.image.load(os.path.join("CS_project", "Girl_duck2.png")), 
            pygame.image.load(os.path.join("CS_project", "Girl_duck1.png"))]
 
-Small_Log = pygame.image.load(os.path.join("CS_project", "LogSmall.png"))
-Large_Log = pygame.image.load(os.path.join("CS_project", "LogLarge.png"))
-Snail = pygame.image.load(os.path.join("CS_project", "Snail.png"))
+Small_Log = [pygame.image.load(os.path.join("CS_project", "LogSmall.png"))]
+Large_Log = [pygame.image.load(os.path.join("CS_project", "LogLarge.png"))]
+Snail = [pygame.image.load(os.path.join("CS_project", "Snail.png"))]
 
 Bird = [pygame.image.load(os.path.join("CS_project", "Bird1.png")), 
-           pygame.image.load(os.path.join("CS_project", "Bird2.png"))]
-Vine = pygame.image.load(os.path.join("CS_project", "Vine.png"))
+        pygame.image.load(os.path.join("CS_project", "Bird2.png"))]
+Vine = [pygame.image.load(os.path.join("CS_project", "Vine.png"))]
 
 Background = pygame.image.load(os.path.join("CS_project", "Setting_background.png"))
 Foreground = pygame.image.load(os.path.join("CS_project", "Setting_foreground.png"))
@@ -114,9 +114,33 @@ class Obstacle:
     def draw(self, Screen):
         Screen.blit(self.image[self.type], self.rect)
 
+class SmallLog(Obstacle):
+    def __init__(self, image):
+        self.type = 0
+        super().__init__(image, self.type)
+        self.rect.y = 325
+
+class LargeLog(Obstacle):
+    def __init__(self, image):
+        self.type = 0
+        super().__init__(image, self.type)
+        self.rect.y = 300
+
+class Birds(Obstacle):
+    def __init__(self, image):
+        super().__init__(image, 0)
+        self.rect.y = 250
+        self.index = 0
+
+    def draw(self, Screen):
+        if self.index >= 9:
+            self.index = 0
+        Screen.blit(self.image[self.index//5], self.rect)
+        self.index += 1
+
 
 def main():
-    global game_speed, x_pos_set, y_pos_set, points
+    global game_speed, x_pos_set, y_pos_set, points, obstacles
     run = True
     clock = pygame.time.Clock()
     player = Girl()
@@ -125,6 +149,7 @@ def main():
     y_pos_set = 240
     points = 0
     font = pygame.font.Font('freesansbold.ttf', 20)
+    obstacles = []
 
     def score():
         global points, game_speed
@@ -173,6 +198,22 @@ def main():
         player.draw(Screen)
         player.update(userInput)
 
+        if len(obstacles) == 0:
+            if random.randint(0, 2) == 0:
+                obstacles.append(SmallLog(Small_Log))
+            elif random.randint(0, 2) == 1:
+                obstacles.append(LargeLog(Large_Log))
+            elif random.randint(0, 2) == 2:
+                obstacles.append(Birds(Bird))
+
+        for obstacle in obstacles:
+            obstacle.draw(Screen)
+            obstacle.update()
+            if player.girl_rect.colliderect(obstacle.rect):
+                pygame.time.delay(2000)
+                death_count += 1
+                menu(death_count)
+                
         score()
 
         clock.tick(30)
