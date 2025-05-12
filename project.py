@@ -138,6 +138,12 @@ class Birds(Obstacle):
         Screen.blit(self.image[self.index//5], self.rect)
         self.index += 1
 
+class Snails(Obstacle):
+    def __init__(self, image):
+        self.type = 0
+        super().__init__(image, self.type)
+        self.rect.y = 330
+
 
 def main():
     global game_speed, x_pos_set, y_pos_set, points, obstacles
@@ -200,11 +206,13 @@ def main():
         player.update(userInput)
 
         if len(obstacles) == 0:
-            if random.randint(0, 2) == 0:
+            if random.randint(0, 3) == 0:
                 obstacles.append(SmallLog(Small_Log))
-            elif random.randint(0, 2) == 1:
+            elif random.randint(0, 3) == 1:
                 obstacles.append(LargeLog(Large_Log))
-            elif random.randint(0, 2) == 2:
+            elif random.randint(0, 3) == 2:
+                obstacles.append(Snails(Snail))
+            elif random.randint(0, 3) == 3:
                 obstacles.append(Birds(Bird))
 
         for obstacle in obstacles:
