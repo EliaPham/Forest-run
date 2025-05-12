@@ -16,7 +16,7 @@ Ducking = [pygame.image.load(os.path.join("CS_project", "Girl_duck2.png")),
            pygame.image.load(os.path.join("CS_project", "Girl_duck1.png"))]
 
 Small_Log = pygame.image.load(os.path.join("CS_project", "LogSmall.png"))
-Large_Cactus = pygame.image.load(os.path.join("CS_project", "LogLarge.png"))
+Large_Log = pygame.image.load(os.path.join("CS_project", "LogLarge.png"))
 Snail = pygame.image.load(os.path.join("CS_project", "Snail.png"))
 
 Bird = [pygame.image.load(os.path.join("CS_project", "Bird1.png")), 
@@ -98,6 +98,21 @@ class Girl:
 
     def draw(self, Screen):
         Screen.blit(self.image, (self.girl_rect.x, self.girl_rect.y))
+
+class Obstacle:
+    def __init__(self, image, type):
+        self.image = image
+        self.type = type
+        self.rect = self.image[self.type].get_rect()
+        self.rect.x = Screen_Width
+
+    def update(self):
+        self.rect.x -= game_speed
+        if self.rect.x < -self.rect.width:
+                obstacles.pop()
+
+    def draw(self, Screen):
+        Screen.blit(self.image[self.type], self.rect)
 
 
 def main():
