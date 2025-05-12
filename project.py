@@ -110,6 +110,17 @@ def main():
     y_pos_set = 240
     points = 0
     font = pygame.font.Font('freesansbold.ttf', 20)
+
+    def score():
+        global points, game_speed
+        points += 1
+        if points % 100 == 0:
+            game_speed += 1
+
+        text = font.render("Points: " + str(points), True, (0, 0, 0))
+        textRect = text.get_rect()
+        textRect.center = (1000, 40)
+        Screen.blit(text, textRect)
     
 
     def background():
