@@ -173,7 +173,7 @@ class Vines(Obstacle):
 class Birds(Obstacle):
     def __init__(self, image):
         super().__init__(image, 0)
-        self.rect.y = 260
+        self.rect.y = 270
         self.index = 0
 
     def draw(self, Screen):
@@ -221,7 +221,7 @@ def main():
         if x_pos_set <= -image_width:
             Screen.blit(Background, (image_width + x_pos_set, y_pos_set))
             x_pos_set = 0
-        x_pos_set -= game_speed - 10
+        x_pos_set -= game_speed - 20
 
     def foreground():
         global x_pos_set, y_pos_set
