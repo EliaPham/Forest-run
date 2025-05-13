@@ -27,7 +27,7 @@ Bird = [pygame.transform.scale(
     pygame.image.load(os.path.join("CS_project", "Bird1.png")), (int(96), int(72))),
     pygame.transform.scale(
     pygame.image.load(os.path.join("CS_project", "Bird2.png")), (int(96), int(72)))]
-Vine = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "Vine.png")), (int(160), int(350)))]
+Vine = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "Vine.png")), (int(140), int(350)))]
 
 Background = pygame.transform.scale(
     pygame.image.load(os.path.join("CS_project", "Setting_background.png")), (int(9616), int(600)))
@@ -55,6 +55,7 @@ class Girl:
         self.girl_rect = self.image.get_rect()
         self.girl_rect.x = self.X_Pos
         self.girl_rect.y = self.Y_Pos
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self, userInput):
         if self.girl_duck:
@@ -79,6 +80,8 @@ class Girl:
             self.girl_duck = False
             self.girl_run = True
             self.girl_jump = False
+
+        self.mask = pygame.mask.from_surface(self.image)
 
     def duck(self):
         self.image = self.duck_img[self.step_index // 5]
@@ -113,6 +116,7 @@ class Obstacle:
         self.type = type
         self.rect = self.image[self.type].get_rect()
         self.rect.x = Screen_Width
+        self.mask = pygame.mask.from_surface(self.image[self.type])
 
     def update(self):
         self.rect.x -= game_speed + 10
@@ -157,7 +161,12 @@ class Birds(Obstacle):
             self.index = 0
         Screen.blit(self.image[self.index//5], self.rect)
         self.index += 1
+        self.mask = pygame.mask.from_surface(self.image[self.index//5])
 
+def pixel_collision(player, obstacle):
+    offset_x = obstacle.rect.x - player.girl_rect.x
+    offset_y = obstacle.rect.y - player.girl_rect.y
+    return player.mask.overlap(obstacle.mask, (offset_x, offset_y)) is not None
 
 def main():
     global game_speed, x_pos_set, y_pos_set, points, obstacles
@@ -235,13 +244,14 @@ def main():
             obstacle.draw(Screen)
             obstacle.update()
             if player.girl_rect.colliderect(obstacle.rect):
-                pygame.time.delay(2000)
-                death_count += 1
-                menu(death_count)
-                return
+                if pixel_collision(player, obstacle):
+                    pygame.time.delay(2000)
+                    death_count += 1
+                    menu(death_count)
+                    return
                 
         score()
-
+        
         clock.tick(30)
         pygame.display.update()
 
