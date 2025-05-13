@@ -164,7 +164,7 @@ def main():
     run = True
     clock = pygame.time.Clock()
     player = Girl()
-    game_speed = 14
+    game_speed = 15
     x_pos_set = 0
     y_pos_set = 0
     points = 0
@@ -178,7 +178,7 @@ def main():
         if points % 100 == 0:
             game_speed += 1
 
-        text = font.render("Points: " + str(points), True, (0, 0, 0))
+        text = font.render("Points: " + str(points), True, (255, 255, 255))
         textRect = text.get_rect()
         textRect.center = (1000, 40)
         Screen.blit(text, textRect)
