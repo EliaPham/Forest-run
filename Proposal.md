@@ -47,4 +47,7 @@
     by *May 5, 2025*
   - **Week 4:** Adding in the obstacles/entites and coding their interactions with deathscreens (like the
     reset button and start buttons) by *May 12, 2025*
+
+## Milestones
+https://www.youtube.com/watch?v=KOBKkPWGP-g&list=PL30AETbxgR-fAbwiuU1vDl3owNUPUuVrz&index=1
     
