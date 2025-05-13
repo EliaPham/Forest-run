@@ -115,7 +115,7 @@ class Obstacle:
         self.rect.x = Screen_Width
 
     def update(self):
-        self.rect.x -= game_speed
+        self.rect.x -= game_speed + 10
         if self.rect.x < -self.rect.width:
                 obstacles.pop()
 
@@ -200,7 +200,7 @@ def main():
         Screen.blit(Foreground, (x_pos_set, y_pos_set))
         Screen.blit(Foreground, (image_width + x_pos_set, y_pos_set))
         if x_pos_set <= -image_width:
-            Screen.blit(Foreground, (image_width + x_pos_set, y_pos_set))
+            Screen.blit(Background, (image_width + x_pos_set, y_pos_set))
             x_pos_set = 0
         x_pos_set -= game_speed
 
