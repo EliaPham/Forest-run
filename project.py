@@ -21,6 +21,7 @@ Ducking =[pygame.transform.scale(
 
 Small_Log = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "LogSmall.png")), (int(82.5), int(82.5)))]
 Large_Log = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "LogLarge.png")), (int(147.5), int(147.5)))]
+XL_Log = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "XLLog.png")), (int(147.5), int(205)))]
 Snail = [pygame.transform.scale(pygame.image.load(os.path.join("CS_project", "Snail.png")), (int(90), int(63)))]
 
 Bird = [pygame.transform.scale(
@@ -143,19 +144,25 @@ class SmallLog(Obstacle):
     def __init__(self, image):
         self.type = 0
         super().__init__(image, self.type)
-        self.rect.y = 420
+        self.rect.y = 410
 
 class LargeLog(Obstacle):
     def __init__(self, image):
         self.type = 0
         super().__init__(image, self.type)
-        self.rect.y = 370
+        self.rect.y = 360
+
+class XLLog(Obstacle):
+    def __init__(self, image):
+        self.type = 0
+        super().__init__(image, self.type)
+        self.rect.y = 280
 
 class Snails(Obstacle):
     def __init__(self, image):
         self.type = 0
         super().__init__(image, self.type)
-        self.rect.y = 430
+        self.rect.y = 420
 
 class Vines(Obstacle):
     def __init__(self, image):
@@ -166,7 +173,7 @@ class Vines(Obstacle):
 class Birds(Obstacle):
     def __init__(self, image):
         super().__init__(image, 0)
-        self.rect.y = 250
+        self.rect.y = 260
         self.index = 0
 
     def draw(self, Screen):
@@ -242,15 +249,17 @@ def main():
         player.update(userInput)
 
         if len(obstacles) == 0:
-            if random.randint(0, 4) == 0:
+            if random.randint(0, 5) == 0:
                 obstacles.append(SmallLog(Small_Log))
-            elif random.randint(0, 4) == 1:
+            elif random.randint(0, 5) == 1:
                 obstacles.append(LargeLog(Large_Log))
-            elif random.randint(0, 4) == 2:
+            elif random.randint(0, 5) == 2:
+                obstacles.append(XLLog(XL_Log))
+            elif random.randint(0, 5) == 3:
                 obstacles.append(Snails(Snail))
-            elif random.randint(0, 4) == 3:
+            elif random.randint(0, 5) == 4:
                 obstacles.append(Vines(Vine))
-            elif random.randint(0, 4) == 4:
+            elif random.randint(0, 5) == 5:
                 obstacles.append(Birds(Bird))
 
         for obstacle in list(obstacles):
