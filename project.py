@@ -56,6 +56,8 @@ class Girl:
         self.girl_rect.x = self.X_Pos
         self.girl_rect.y = self.Y_Pos
         self.mask = pygame.mask.from_surface(self.image)
+        self.jump_count = 0
+        self.max_jumps = 2
 
     def update(self, userInput):
         if self.girl_duck:
@@ -67,11 +69,22 @@ class Girl:
 
         if self.step_index >= 10:
             self.step_index = 0
+
+        if self.girl_jump:
+            self.jump_count = 0
+            self.has_dbjump = False
+
         
-        if userInput[pygame.K_UP] and not self.girl_jump:
-            self.girl_duck = False
-            self.girl_run = False
-            self.girl_jump = True
+        if userInput[pygame.K_UP]:
+            if not self.girl_jump:
+                self.girl_duck = False
+                self.girl_run = False
+                self.girl_jump = True
+                self.jump_count = 1
+                self.jump_vel = self.Jump_Velocity
+            elif self.jump_count < self.max_jumps and not self.has_dbjump:
+                self.jump_vel = self.Jump_Velocity * 0.8
+                self.jump_count += 1
         elif userInput[pygame.K_DOWN] and not self.girl_jump:
             self.girl_duck = True
             self.girl_run = False
@@ -102,7 +115,7 @@ class Girl:
         if self.girl_jump:
             self.girl_rect.y -= self.jump_vel * 4
             self.jump_vel -= 0.8
-        if self.jump_vel < - self.Jump_Velocity:
+        if self.jump_vel < -self.Jump_Velocity:
             self.girl_jump = False
             self.jump_vel = self.Jump_Velocity
 
